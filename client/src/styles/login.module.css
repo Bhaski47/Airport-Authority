@@ -1,0 +1,30 @@
+.container{
+    height: 100vh;
+    display: grid;
+    place-items: center;
+}
+
+.partition{
+    height: 40%;
+    width: 40%;
+    /*background-color: red;*/
+    border-radius: 10px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+}
+
+.imageContainer{
+    flex: 1;
+    display: grid;
+    place-items: center;
+}
+
+.loginContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}

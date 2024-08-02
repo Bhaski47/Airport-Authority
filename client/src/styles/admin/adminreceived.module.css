@@ -1,0 +1,11 @@
+.container{
+    display: grid;
+    place-items: center;
+    height: 100vh;
+}
+
+/*.box{*/
+/*    padding: 10px;*/
+/*    border: 1px solid black;*/
+/*    border-radius: 10px;*/
+/*}*/
