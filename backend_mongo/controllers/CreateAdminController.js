@@ -5,7 +5,7 @@ const CreateAdminController = async (req, res) => {
     try{
         const user = await Admin.findOne({ email: req.body.email });
         if (user) {
-            return res.status(200).send({status_code:400,message:"Admin already exists"});
+            return res.status(200).send({status_code:401,message:"Admin already exists"});
         }
         const saltRounds = parseInt(process.env.SALT, 10);
         const salt = await bcrypt.genSalt(saltRounds);

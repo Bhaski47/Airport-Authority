@@ -4,8 +4,16 @@
     height: 100vh;
 }
 
-/*.box{*/
-/*    padding: 10px;*/
-/*    border: 1px solid black;*/
-/*    border-radius: 10px;*/
-/*}*/
+.box{
+    width: 50%;
+    margin: auto;
+}
+
+.nocBox{
+    display: flex;
+    background-color: red;
+    justify-content: space-around;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 0.8rem;
+}

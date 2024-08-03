@@ -1,23 +1,24 @@
 const mongoose = require('mongoose');
 
 const EmployeeNOCApply = new mongoose.Schema({
-    email: {type: String, unique: true, required: true},
+    email: { type: String, unique: true, required: true },
     bookReturn: {
         type: String,
         required: true,
+        default: "no"
     },
     gemUser: {
         type: String,
         required: true,
-        unique: true,
+        default: "no"
     },
     gemId: {
         type: String,
-        required: true,
+        default: null // Made optional
     },
     gemIdTransfer: {
         type: String,
-        required: true,
+        default: "no" // Made optional
     },
     applyingDate: {
         type: Date,
@@ -25,66 +26,134 @@ const EmployeeNOCApply = new mongoose.Schema({
     },
     aaiThrift: {
         type: String,
-        required: true,
+        default: "no"
     },
     pms: {
         type: String,
-        required: true,
+        default: "no"
     },
     accessCard: {
         type: String,
-        required: true,
+        default: "no"
     },
     documentReturn: {
         type: String,
-        required: true,
+        default: "no"
     },
     assets: {
         type: String,
-        required: true,
+        default: "no"
     },
     sapId: {
         type: String,
-        required: true,
+        default: "no" // Made optional
+    },
+    sapIdInfo: {
+        type: String,
+        default: "no"
     },
     surrenderQuarters: {
         type: String,
-        required: true,
+        default: "no"
     },
     cpppUser: {
         type: String,
-        required: true,
+        default: "no"
     },
     cpppId: {
         type: String,
-        required: true,
+        default: null // Made optional
     },
     aaiEmployeeCard: {
         type: String,
-        required: true,
+        default: "no"
     },
     applyNOC: {
         type: String,
-        required: true,
+        default: "Transfer"
     },
-    transferSystem: {
+    transferAttendanceSystem: {
         type: String,
-        required: true,
+        default: "no"
     },
     officeDue: {
         type: String,
-        required: true,
+        default: "no"
     },
     returnId: {
         type: String,
-        required: true,
+        default: "no"
     },
-    validated:{
-        type: Boolean,
-        default: false,
+    itValidated: {
+        type: String,
+        default: "Pending",
+    },
+    hrValidated: {
+        type: String,
+        default: "Pending",
+    },
+    securityValidated: {
+        type: String,
+        default: "Pending",
+    },
+    estateValidated: {
+        type: String,
+        default: "Pending",
+    },
+    societyValidated: {
+        type: String,
+        default: "Pending",
+    },
+    creditSocietyClearance: {
+        type: String,
+        default: null // New field based on request data
+    },
+    pmsSubmission: {
+        type: String,
+        default: null // New field based on request data
+    },
+    accessCardReturn: {
+        type: String,
+        default: null // New field based on request data
+    },
+    registerReturn: {
+        type: String,
+        default: null // New field based on request data
+    },
+    itAssetsReturn: {
+        type: String,
+        default: null // New field based on request data
+    },
+    sapUser: {
+        type: String,
+        default: null // New field based on request data
+    },
+    residentialQuarters: {
+        type: String,
+        default: null // New field based on request data
+    },
+    employeeCardReturn: {
+        type: String,
+        default: null // New field based on request data
+    },
+    nocReason: {
+        type: String,
+        default: null // New field based on request data
+    },
+    biometricTransfer: {
+        type: String,
+        default: null // New field based on request data
+    },
+    officeDues: {
+        type: String,
+        default: null // New field based on request data
+    },
+    identityCardReturn: {
+        type: String,
+        default: null // New field based on request data
     }
-})
+});
 
 const ENOCApply = mongoose.model("ENOCApply", EmployeeNOCApply);
 
-module.exports = {ENOCApply};
+module.exports = { ENOCApply };

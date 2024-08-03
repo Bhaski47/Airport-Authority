@@ -7,12 +7,17 @@ import EmployeeStatus from "./pages/employee/EmployeeStatus";
 import AdminStatus from "./pages/admin/AdminStatus";
 import AdminReceived from "./pages/admin/AdminReceived";
 import {Toaster} from "react-hot-toast";
+import SignUp from "./pages/SignUp";
 
 function App() {
     const router = createBrowserRouter([
         {
             path: "/",
             element: <Login/>,
+        },
+        {
+            path:"/create",
+            element:<SignUp/>
         },
         {
             path: "/employee",
