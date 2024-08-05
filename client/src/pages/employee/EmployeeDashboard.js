@@ -67,7 +67,7 @@ const FormComponent = ({ setIsEmployeeModalOpen, email }) => {
     useEffect(() => {
         async function fetchData() {
             try {
-                const res = await axios.post("http://localhost:3000/api/employee/fetch/noc", { email });
+                const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/employee/fetch/noc`, { email });
                 if (res.data.status_code === 200) {
                     let applyingDateString = '';
                     if (res.data.data.applyingDate) {
