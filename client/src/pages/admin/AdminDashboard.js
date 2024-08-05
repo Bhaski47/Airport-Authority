@@ -10,7 +10,6 @@ export default function AdminDashboard() {
     const [employeeEmail, setEmployeeEmail] = useState('')
 
     useEffect(() => {
-        // console.log(JSON.parse(localStorage.getItem("admin")));
         setAdmin(JSON.parse(localStorage.getItem("admin")));
         setEmployeeEmail(JSON.parse(localStorage.getItem("admin")).email)
     }, []);
@@ -24,7 +23,7 @@ export default function AdminDashboard() {
                     <h2 style={{textAlign:"center"}}>Admin</h2>
                     <div className={styles.status}>
                         <h3>Name: {admin.name}</h3>
-                        <h3>Dept: {admin.department}</h3>
+                        <h3>Dept: {admin.department === "SOCIETY" ? "NAD SOCIETY" : admin.department}</h3>
                         <h3>Designation: {admin.designation}</h3>
                     </div>
                     <div className={styles.buttonContainer}>

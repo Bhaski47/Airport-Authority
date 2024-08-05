@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 
 const CreateEmployeeController = async (req, res) => {
     try{
-        console.log(req.body)
         const user = await Employee.findOne({ email: req.body.email });
         if (user) {
             return res.status(200).send({status_code:400,message:"Employee already exists"});

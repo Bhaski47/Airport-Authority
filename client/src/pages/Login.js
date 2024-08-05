@@ -12,7 +12,7 @@ export default function Login() {
 
     const handleLogin = async () => {
         if (employee) {
-            await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/employee/login`, {email: username, password: password})
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/employee/login`, {email: username.toLowerCase(), password: password})
                 .then((response) => {
                     if (response.data.status_code === 200) {
                         localStorage.removeItem("admin");
@@ -25,7 +25,7 @@ export default function Login() {
                 })
                 .catch(() => toast.error("Login failed."));
         } else {
-            await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/admin/login`, {email: username, password: password})
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/admin/login`, {email: username.toLowerCase(), password: password})
                 .then((response) => {
                     if (response.data.status_code === 200) {
                         localStorage.removeItem("employee");

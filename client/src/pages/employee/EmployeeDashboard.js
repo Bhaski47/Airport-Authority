@@ -245,7 +245,7 @@ const FormComponent = ({ setIsEmployeeModalOpen, email }) => {
                 <input type="radio" name="identityCardReturn" id="i2" value="no" checked={formData.identityCardReturn === 'no'} onChange={handleInputChange} />
                 <label htmlFor="i2">No</label>
                 <br />
-                <button type="button" onClick={() => handleSubmit()}>Approve</button>
+                <button type="button" onClick={() => handleSubmit()}>Submit</button>
             </form>
         </div>
     );

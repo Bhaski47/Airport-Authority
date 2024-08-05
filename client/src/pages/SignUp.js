@@ -12,13 +12,12 @@ export default function SignUp() {
         email: "",
         department: "",
         designation: "",
-        age: 0
     });
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
             ...prevState,
-            [name]: name === 'department' ? value.toUpperCase() : value
+            [name]: name === 'email' ? value.toLowerCase() : value
         }));
     };
     const validateForm = () => {
@@ -54,7 +53,7 @@ export default function SignUp() {
     const handleLogin = async (e) => {
         e.preventDefault();
         if (employee && validateForm()) {
-            await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/employee/create/employee`, {...formData})
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/employee/create/employee`, {...formData,})
                 .then((response) => {
                     if (response.data.status_code === 200) {
                         toast.success(response.data.message);
@@ -107,26 +106,24 @@ export default function SignUp() {
                             onChange={handleInputChange}
                             placeholder="Email"
                         />
-                        <input
-                            type="text"
+                        <select
                             name="department"
                             value={formData.department}
                             onChange={handleInputChange}
-                            placeholder="Department"
-                        />
+                        >
+                            <option value="" disabled>Select Department</option>
+                            <option value="IT">IT</option>
+                            <option value="HR">HR</option>
+                            <option value="SOCIETY">SOCIETY</option>
+                            <option value="ESTATE">ESTATE</option>
+                            <option value="SECURITY">SECURITY</option>
+                        </select>
                         <input
                             type="text"
                             name="designation"
                             value={formData.designation}
                             onChange={handleInputChange}
                             placeholder="Designation"
-                        />
-                        <input
-                            type="number"
-                            name="age"
-                            value={formData.age}
-                            onChange={handleInputChange}
-                            placeholder="Age"
                         />
                         <button type="submit">Submit</button>
                     </form>

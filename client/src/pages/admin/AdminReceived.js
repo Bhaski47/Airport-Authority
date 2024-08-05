@@ -32,7 +32,7 @@ export default function AdminReceived() {
     return (
         <div className={styles.container}>
             <div className={styles.box}>
-                {isOpen ? <Modal setIsOpen={setIsOpen} isOpen={isOpen} employee={employeeData}/> :
+                {isOpen ? <Modal setIsOpen={setIsOpen} isOpen={isOpen} employee={employeeData} admin={admin}/> :
                     <>
                         <h2 style={{textAlign:"center"}}>Received Applications</h2>
                         {
@@ -55,7 +55,7 @@ export default function AdminReceived() {
     )
 }
 
-const Modal = ({ isOpen, setIsOpen,employee }) => {
+const Modal = ({ admin, setIsOpen,employee }) => {
         const [formData, setFormData] = useState({
             bookReturn: "",
             gemUser: "",
@@ -115,8 +115,18 @@ const Modal = ({ isOpen, setIsOpen,employee }) => {
             const { name, value } = e.target;
             setFormData({ ...formData, [name]: value });
         };
-        const submitHandler = async(num) => {
-            await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/admin/approvenoc`,{...employee,num})
+    const [input, setInput] = useState("");
+        const submitHandler = async(event,num) => {
+            event.preventDefault();
+            if (num === 2){
+                setInput(window.prompt("Please enter your comment:"));
+                if (!input) {
+                    toast.error("Input cannot be empty. Please enter a comment.");
+                    return;
+                }
+            }
+
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/admin/approvenoc`,{...employee,num,adminDepartment:admin.department,comment: input})
                 .then((response) => {
                     if(response.data.status_code === 200) toast.success(response.data.message);
                     else if(response.data.status_code === 400) toast.error(response.data.message);
@@ -449,8 +459,9 @@ const Modal = ({ isOpen, setIsOpen,employee }) => {
                 />
                 <label>No</label>
                 <br/>
-                <button onClick={()=>submitHandler(1)}>Approved</button>
-                <button onClick={()=>submitHandler(2)}>Comment</button>
+                <button onClick={(event)=>submitHandler(event,1)}>Approved</button>
+                <button onClick={(event) => submitHandler(event, 2)}>Comment</button>
+
             </form>
         );
-    };
+};

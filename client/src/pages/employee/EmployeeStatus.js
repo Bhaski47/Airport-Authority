@@ -18,7 +18,10 @@ export default function EmployeeStatus() {
                     if(res.data.status_code === 200) {
                         setData(res.data.data);
                     }
-                    else if(res.data.status_code === 404) toast.error(res.data.message);
+                    else if(res.data.status_code === 404) {
+                        setData({download:true})
+                        toast.error(res.data.message);
+                    }
                 })
         }
         fetchData();

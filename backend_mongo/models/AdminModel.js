@@ -14,10 +14,6 @@ const AdminSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    age:{
-        type: Number,
-        required: true,
-    },
     department:{
         type: String,
         required: true,
