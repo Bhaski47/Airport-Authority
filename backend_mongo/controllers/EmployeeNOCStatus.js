@@ -5,7 +5,14 @@ const EmployeeNOCStatus =async(req,res)=>{
         const user = await ENOCApply.findOne({email: req.body.email});
         if(!user) return res.status(200).send({status_code:404,message:'Apply the form'});
         let download;
-        if( (user.societyValidated && user.estateValidated && user.securityValidated && user.hrValidated && user.itValidated) === 'Verified') download = false
+        if (user.societyValidated === 'Verified' &&
+            user.estateValidated === 'Verified' &&
+            user.securityValidated === 'Verified' &&
+            user.hrValidated === 'Verified' &&
+            user.itValidated === 'Verified') {
+            download = false;
+        }
+
         else download = true;
         const data = {
             it: user.itValidated,

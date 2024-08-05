@@ -27,12 +27,14 @@ export default function Login() {
         } else {
             await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/admin/login`, {email: username, password: password})
                 .then((response) => {
-                    console.log(response.data.data);
                     if (response.data.status_code === 200) {
                         localStorage.removeItem("employee");
                         localStorage.setItem("admin", JSON.stringify(response.data.data));
                         toast.success("Login successful");
                         navigate("/admin")
+                    }else if (response.data.status_code === 404) {
+                        toast.error(response.data.message);
+
                     } else if (response.data.status_code === 401) {
                         toast.error(response.data.message);
                     }

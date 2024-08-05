@@ -16,7 +16,9 @@ const CreateEmployeeNOC = async(req, res) => {
                 { new: true, upsert: true })
             return res.status(200).send({status_code:200, message:"Application Updated Successfully"});
         }
-        else await ENOCApply({...formData,applyingDate}).save();
+        else{
+            await ENOCApply({...formData,applyingDate}).save();
+        }
         res.status(200).send({status_code:200,message:"Application Created Successfully"});
     }
     catch(err){
