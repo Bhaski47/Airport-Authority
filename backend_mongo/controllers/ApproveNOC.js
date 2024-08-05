@@ -14,11 +14,20 @@ const ApproveNOC = async (req, res) => {
         else if (req.body.department === "SOCIETY") updateField = "societyValidated";
         else return res.status(400).send({ status_code: 400, message: "Department not found" });
 
-        const em= await ENOCApply.updateOne(
+        if(req.body.num === 1){
+        await ENOCApply.updateOne(
             { email: req.body.email },
             { $set: { [updateField]: "Verified" } }
         );
         res.status(200).send({ status_code: 200, message: 'NOC approved successfully' });
+        }
+        else if(req.body.num ===2){
+            await ENOCApply.updateOne(
+                { email: req.body.email },
+                { $set: { [updateField]: "Comment" } }
+            );
+            res.status(200).send({ status_code: 200, message: 'NOC Rejected' });
+        }
     }
     catch (e) {
         res.status(500).send({status: 500, message: e.message});

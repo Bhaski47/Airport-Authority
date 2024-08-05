@@ -20,9 +20,7 @@ export default function AdminReceived() {
                         toast.error(response.data.message)
                     }
                     else if(response.data.status_code === 200){
-                        console.log(response.data.data);
                         setData(response.data.data);
-                        console.log(data)
                     }
                     else toast.error(response.data.message);
                 })
@@ -63,7 +61,7 @@ const Modal = ({ isOpen, setIsOpen,employee }) => {
             gemUser: "",
             gemId: "",
             gemIdTransfer: "",
-            date: "",
+            applyingDate: "",
             creditSocietyClearance: "",
             pmsSubmission: "",
             accessCardReturn: "",
@@ -104,13 +102,21 @@ const Modal = ({ isOpen, setIsOpen,employee }) => {
             identityCardReturn: false,
         };
 
+    const formatDate = (isoDate) => {
+        const date = new Date(isoDate);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+
         const handleInputChange = (e) => {
             const { name, value } = e.target;
             setFormData({ ...formData, [name]: value });
         };
-        const submitHandler = async(e) => {
-            e.preventDefault();
-            await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/admin/approvenoc`,{...employee})
+        const submitHandler = async(num) => {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/admin/approvenoc`,{...employee,num})
                 .then((response) => {
                     if(response.data.status_code === 200) toast.success(response.data.message);
                     else if(response.data.status_code === 400) toast.error(response.data.message);
@@ -119,7 +125,7 @@ const Modal = ({ isOpen, setIsOpen,employee }) => {
         };
 
         return (
-            <form onSubmit={submitHandler}>
+            <form>
                 <h1 onClick={()=>setIsOpen(false)}>Close</h1>
                 <p>1. Return of books taken from AAI Library</p>
                 <input
@@ -186,7 +192,7 @@ const Modal = ({ isOpen, setIsOpen,employee }) => {
                 <input
                     type="date"
                     name="date"
-                    value={employee.date}
+                    value={formatDate(employee.applyingDate)}
                     id="dateOfApplying"
                     onChange={handleInputChange}
                     disabled={isFormDisabled.date}
@@ -442,8 +448,9 @@ const Modal = ({ isOpen, setIsOpen,employee }) => {
                     disabled={isFormDisabled.identityCardReturn}
                 />
                 <label>No</label>
-
-                <button type="submit">Submit</button>
+                <br/>
+                <button onClick={()=>submitHandler(1)}>Approved</button>
+                <button onClick={()=>submitHandler(2)}>Comment</button>
             </form>
         );
     };
