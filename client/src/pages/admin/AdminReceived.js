@@ -117,7 +117,26 @@ const Modal = ({ admin, setIsOpen,employee }) => {
         };
     const submitHandler = async (event, num) => {
         event.preventDefault();
+        if(num === 1){
+            try {
+                const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/admin/approvenoc`, {
+                    ...employee,
+                    num,
+                    adminDepartment: admin.department,
+                });
 
+                if (response.data.status_code === 200) {
+                    toast.success(response.data.message);
+                } else if (response.data.status_code === 400) {
+                    toast.error(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } catch (error) {
+                toast.error("An error occurred while submitting the form.");
+                console.error("API Error:", error); // Debugging log
+            }
+        }
         if (num === 2) {
             const userInput = window.prompt("Please enter your comment:");
 
@@ -141,7 +160,6 @@ const Modal = ({ admin, setIsOpen,employee }) => {
                     }
                 } catch (error) {
                     toast.error("An error occurred while submitting the form.");
-                    console.error("API Error:", error); // Debugging log
                 }
             } else {
                 toast.error("Input cannot be empty. Please enter a comment.");
