@@ -115,26 +115,41 @@ const Modal = ({ admin, setIsOpen,employee }) => {
             const { name, value } = e.target;
             setFormData({ ...formData, [name]: value });
         };
-    const [input, setInput] = useState("");
-        const submitHandler = async(event,num) => {
-            event.preventDefault();
-            if (num === 2){
-                setInput(window.prompt("Please enter your comment:"));
-                if (!input) {
-                    toast.error("Input cannot be empty. Please enter a comment.");
-                    return;
+    const submitHandler = async (event, num) => {
+        event.preventDefault();
+
+        if (num === 2) {
+            const userInput = window.prompt("Please enter your comment:");
+
+            // console.log("User input received:", userInput);
+
+            if (userInput !== null && userInput.trim() !== "") {
+                try {
+                    const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/admin/approvenoc`, {
+                        ...employee,
+                        num,
+                        adminDepartment: admin.department,
+                        comment: userInput
+                    });
+
+                    if (response.data.status_code === 200) {
+                        toast.success(response.data.message);
+                    } else if (response.data.status_code === 400) {
+                        toast.error(response.data.message);
+                    } else {
+                        toast.error(response.data.message);
+                    }
+                } catch (error) {
+                    toast.error("An error occurred while submitting the form.");
+                    console.error("API Error:", error); // Debugging log
                 }
+            } else {
+                toast.error("Input cannot be empty. Please enter a comment.");
             }
+        }
+    };
 
-            await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/admin/approvenoc`,{...employee,num,adminDepartment:admin.department,comment: input})
-                .then((response) => {
-                    if(response.data.status_code === 200) toast.success(response.data.message);
-                    else if(response.data.status_code === 400) toast.error(response.data.message);
-                    else toast.error(response.data.message);
-                })
-        };
-
-        return (
+    return (
             <form>
                 <h1 onClick={()=>setIsOpen(false)}>Close</h1>
                 <p>1. Return of books taken from AAI Library</p>

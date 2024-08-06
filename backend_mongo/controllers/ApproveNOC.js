@@ -3,6 +3,7 @@ const {Employee} = require("../models/EmployeeModel");
 
 const ApproveNOC = async (req, res) => {
     try{
+        // console.log(req.body)
         const employeeNOC = ENOCApply.findOne({email:req.body.email});
         if (!employeeNOC) res.status(200).send({status_code:404,message: 'No employee found'});
         let updateField;
@@ -15,7 +16,7 @@ const ApproveNOC = async (req, res) => {
         if(req.body.num === 1){
         await ENOCApply.updateOne(
             { email: req.body.email },
-            { $set: { [updateField]: req.body.comment } }
+            { $set: { [updateField]: "Verified" } }
         );
         res.status(200).send({ status_code: 200, message: 'NOC approved successfully' });
         }
