@@ -55,69 +55,41 @@ export default function AdminReceived() {
     )
 }
 
-const Modal = ({ admin, setIsOpen,employee }) => {
-        const [formData, setFormData] = useState({
-            bookReturn: "",
-            gemUser: "",
-            gemId: "",
-            gemIdTransfer: "",
-            applyingDate: "",
-            creditSocietyClearance: "",
-            pmsSubmission: "",
-            accessCardReturn: "",
-            registerReturn: "",
-            itAssetsReturn: "",
-            sapUser: "",
-            sapId: "",
-            residentialQuarters: "",
-            cpppUser: "",
-            cpppId: "",
-            employeeCardReturn: "",
-            nocReason: "",
-            biometricTransfer: "",
-            officeDues: "",
-            identityCardReturn: "",
-        });
+const Modal = ({ admin, setIsOpen, employee }) => {
+    const [formData, setFormData] = useState({
+        bookReturn_lang: employee.bookReturn_lang || "",
+        gemUser_it: employee.gemUser_it || "",
+        gemId_it: employee.gemId_it || "",
+        gemIdTransfer_it: employee.gemIdTransfer_it || "",
+        date: employee.date || "",
+        creditSocietyMember_society: employee.creditSocietyMember_society || "",
+        creditSocietyClearance: employee.creditSocietyClearance || "",
+        pmsSubmission_stores: employee.pmsSubmission_stores || "",
+        accessCardReturn: employee.accessCardReturn || "",
+        registerReturn_stores: employee.registerReturn_stores || "",
+        itAssetsReturn_it: employee.itAssetsReturn_it || "",
+        sapUser_it: employee.sapUser_it || "",
+        sapId_it: employee.sapId_it || "",
+        residentialQuarters_hr: employee.residentialQuarters_hr || "",
+        cpppUser_it: employee.cpppUser_it || "",
+        cpppId_it: employee.cpppId_it || "",
+        employeeCardReturn_hr: employee.employeeCardReturn_hr || "",
+        nocReason: employee.nocReason || "",
+        societyId_society: employee.societyId_society || "",
+        biometricTransfer_hr: employee.biometricTransfer_hr || "",
+        officeDuesDetailed_finance: employee.officeDuesDetailed_finance || "",
+        identityCardReturn_security: employee.identityCardReturn_security || "",
+        pendingEOfficeFiles_it: employee.pendingEOfficeFiles_it || "",
+    });
 
-        const isFormDisabled = {
-            bookReturn: false,
-            gemUser: false,
-            gemId: false,
-            gemIdTransfer: false,
-            date: false,
-            creditSocietyClearance: false,
-            pmsSubmission: false,
-            accessCardReturn: false,
-            registerReturn: false,
-            itAssetsReturn: false,
-            sapUser: false,
-            sapId: false,
-            residentialQuarters: false,
-            cpppUser: false,
-            cpppId: false,
-            employeeCardReturn: false,
-            nocReason: false,
-            biometricTransfer: false,
-            officeDues: false,
-            identityCardReturn: false,
-        };
-
-    const formatDate = (isoDate) => {
-        const date = new Date(isoDate);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
     };
 
-
-        const handleInputChange = (e) => {
-            const { name, value } = e.target;
-            setFormData({ ...formData, [name]: value });
-        };
     const submitHandler = async (event, num) => {
         event.preventDefault();
-        if(num === 1){
+        if (num === 1) {
             try {
                 const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/admin/approvenoc`, {
                     ...employee,
@@ -127,20 +99,16 @@ const Modal = ({ admin, setIsOpen,employee }) => {
 
                 if (response.data.status_code === 200) {
                     toast.success(response.data.message);
-                } else if (response.data.status_code === 400) {
-                    toast.error(response.data.message);
                 } else {
                     toast.error(response.data.message);
                 }
             } catch (error) {
                 toast.error("An error occurred while submitting the form.");
-                console.error("API Error:", error); // Debugging log
+                console.error("API Error:", error);
             }
         }
         if (num === 2) {
             const userInput = window.prompt("Please enter your comment:");
-
-            // console.log("User input received:", userInput);
 
             if (userInput !== null && userInput.trim() !== "") {
                 try {
@@ -148,13 +116,11 @@ const Modal = ({ admin, setIsOpen,employee }) => {
                         ...employee,
                         num,
                         adminDepartment: admin.department,
-                        comment: userInput
+                        comment: userInput,
                     });
 
                     if (response.data.status_code === 200) {
                         toast.success(response.data.message);
-                    } else if (response.data.status_code === 400) {
-                        toast.error(response.data.message);
                     } else {
                         toast.error(response.data.message);
                     }
@@ -168,188 +134,185 @@ const Modal = ({ admin, setIsOpen,employee }) => {
     };
 
     return (
-            <form>
-                <h1 onClick={()=>setIsOpen(false)}>Close</h1>
+        <form className="conditionalform">
+            <h4 onClick={() => setIsOpen(false)}>Close</h4>
+            <h1 style={{ textAlign: "center" }}>AAI Form</h1>
+            <div className="form-group inline-select">
                 <p>1. Return of books taken from AAI Library</p>
-                <input
+                <input disabled
                     type="radio"
-                    name="bookReturn"
+                    name="bookReturn_lang"
                     value="yes"
+                    checked={formData.bookReturn_lang === "yes"}
                     onChange={handleInputChange}
-                    checked={employee.bookReturn === "yes"}
-                    disabled={isFormDisabled.bookReturn}
                 />
                 <label>Yes</label>
-                <input
+                <input disabled
                     type="radio"
-                    name="bookReturn"
+                    name="bookReturn_lang"
                     value="no"
+                    checked={formData.bookReturn_lang === "no"}
                     onChange={handleInputChange}
-                    checked={employee.bookReturn === "no"}
-                    disabled={isFormDisabled.bookReturn}
                 />
                 <label>No</label>
-
+            </div>
+            <div className="form-group inline-select">
                 <p>2. Are You A GEM User?</p>
-                <input
+                <input disabled
                     type="radio"
-                    name="gemUser"
+                    name="gemUser_it"
                     value="yes"
+                    checked={formData.gemUser_it === "yes"}
                     onChange={handleInputChange}
-                    checked={employee.gemUser === "yes"}
-                    disabled={isFormDisabled.gemUser}
                 />
                 <label>Yes</label>
-                <input
+                <input disabled
                     type="radio"
-                    name="gemUser"
+                    name="gemUser_it"
                     value="no"
+                    checked={formData.gemUser_it === "no"}
                     onChange={handleInputChange}
-                    checked={employee.gemUser === "no"}
-                    disabled={isFormDisabled.gemUser}
                 />
                 <label>No</label>
-
-                {employee.gemUser === "yes" && (
-                    <>
-                        <p>Enter your Gem ID</p>
-                        <input
-                            type="text"
-                            name="gemId"
-                            value={employee.gemId}
-                            onChange={handleInputChange}
-                            disabled={isFormDisabled.gemId}
-                        />
-                        <p>Whether the GEM ID is transferred to the charge taking over official (YES/NO)</p>
-                        <input
-                            type="text"
-                            name="gemIdTransfer"
-                            value={employee.gemIdTransfer}
-                            onChange={handleInputChange}
-                            disabled={isFormDisabled.gemIdTransfer}
-                        />
-                    </>
-                )}
-
-                <p>3. Date of Applying</p>
-                <input
-                    type="date"
-                    name="date"
-                    value={formatDate(employee.applyingDate)}
-                    id="dateOfApplying"
-                    onChange={handleInputChange}
-                    disabled={isFormDisabled.date}
-                />
-
-                <p>4. Clearance from AAI Thrift Credit society, RHQ, SR</p>
-                <select
-                    name="creditSocietyClearance"
-                    value={employee.creditSocietyClearance}
-                    onChange={handleInputChange}
-                    disabled={isFormDisabled.creditSocietyClearance}
-                >
-                    <option value="" disabled>
-                        Choose
-                    </option>
-                    <option value="YES">YES</option>
-                    <option value="NO">NO</option>
-                </select>
-
-                <p>5. Submission of PMS (Performance Monitoring System)</p>
-                <select
-                    name="pmsSubmission"
-                    value={employee.pmsSubmission}
-                    onChange={handleInputChange}
-                    disabled={isFormDisabled.pmsSubmission}
-                >
-                    <option value="" disabled>
-                        Choose
-                    </option>
-                    <option value="YES">YES</option>
-                    <option value="NO">NO</option>
-                </select>
-
-                <p>6. Return of Access Card</p>
-                <select
-                    name="accessCardReturn"
-                    value={employee.accessCardReturn}
-                    onChange={handleInputChange}
-                    disabled={isFormDisabled.accessCardReturn}
-                >
-                    <option value="" disabled>
-                        Choose
-                    </option>
-                    <option value="YES">YES</option>
-                    <option value="NO">NO</option>
-                </select>
-
-                <p>7. Return of all papers, files, registers, confidential boxes to your concerned department</p>
-                <select
-                    name="registerReturn"
-                    value={employee.registerReturn}
-                    onChange={handleInputChange}
-                    disabled={isFormDisabled.registerReturn}
-                >
-                    <option value="" disabled>
-                        Choose
-                    </option>
-                    <option value="YES">YES</option>
-                    <option value="NO">NO</option>
-                </select>
-
-                <p>8. Whether all the IT assets are given back</p>
-                <select
-                    name="itAssetsReturn"
-                    value={employee.itAssetsReturn}
-                    onChange={handleInputChange}
-                    disabled={isFormDisabled.itAssetsReturn}
-                >
-                    <option value="" disabled>
-                        Choose
-                    </option>
-                    <option value="YES">YES</option>
-                    <option value="NO">NO</option>
-                </select>
-
-                <p>9. Do You Possess a SAP Login ID?</p>
-                <input
+            </div>
+            {formData.gemUser_it === "yes" && (
+                <>
+                    <p>Enter your Gem ID</p>
+                    <input disabled
+                        type="text"
+                        name="gemId_it"
+                        value={formData.gemId_it}
+                        onChange={handleInputChange}
+                    />
+                    <p>
+                        Whether the GEM ID is transferred to the charge taking over
+                        official (YES/NO)
+                    </p>
+                    <input disabled
+                        type="text"
+                        name="gemIdTransfer_it"
+                        value={formData.gemIdTransfer_it}
+                        onChange={handleInputChange}
+                    />
+                </>
+            )}
+            <div className="form-group inline-select">
+                <p>03. Are you a member of the credit society?</p>
+                <input disabled
                     type="radio"
-                    name="sapUser"
+                    name="creditSocietyMember_society"
                     value="yes"
+                    checked={formData.creditSocietyMember_society === "yes"}
                     onChange={handleInputChange}
-                    checked={employee.sapUser === "yes"}
-                    disabled={isFormDisabled.sapUser}
                 />
                 <label>Yes</label>
-                <input
+                <input disabled
                     type="radio"
-                    name="sapUser"
+                    name="creditSocietyMember_society"
                     value="no"
+                    checked={formData.creditSocietyMember_society === "no"}
                     onChange={handleInputChange}
-                    checked={employee.sapUser === "no"}
-                    disabled={isFormDisabled.sapUser}
                 />
                 <label>No</label>
+            </div>
+            {formData.creditSocietyMember_society === "yes" && (
+                <>
+                    <p>
+                        Provide the buycon emailId of the official to whom the gem account
+                        needs to be transferred
+                    </p>
+                    <input disabled
+                        type="text"
+                        name="societyId_society"
+                        value={formData.societyId_society}
+                        onChange={handleInputChange}
+                    />
+                </>
+            )}
 
-                {employee.sapUser === "yes" && (
+            <div className="form-group inline-select">
+                <p>04. Submission of PMS (Performance Monitoring System)</p>
+                <select disabled
+                    name="pmsSubmission_stores"
+                    value={formData.pmsSubmission_stores}
+                    onChange={handleInputChange}
+                >
+                    <option value="" disabled>
+                        Choose
+                    </option>
+                    <option value="YES">YES</option>
+                    <option value="NO">NO</option>
+                </select>
+            </div>
+            <div className="form-group inline-select">
+                <p>
+                    05. Return of all papers, files, registers, confidential boxes to
+                    your concerned department
+                </p>
+                <select disabled
+                    name="registerReturn_stores"
+                    value={formData.registerReturn_stores}
+                    onChange={handleInputChange}
+                >
+                    <option value="" disabled>
+                        Choose
+                    </option>
+                    <option value="YES">YES</option>
+                    <option value="NO">NO</option>
+                </select>
+            </div>
+            <div className="form-group inline-select">
+                <p>06. Whether all the IT assets are given back</p>
+                <select disabled
+                    name="itAssetsReturn_it"
+                    value={formData.itAssetsReturn_it}
+                    onChange={handleInputChange}
+                >
+                    <option value="" disabled>
+                        Choose
+                    </option>
+                    <option value="YES">YES</option>
+                    <option value="NO">NO</option>
+                </select>
+            </div>
+            <div className="form-group inline-select">
+                <p>07. Do You Possess a SAP Login ID?</p>
+                <input disabled
+                    type="radio"
+                    name="sapUser_it"
+                    value="yes"
+                    checked={formData.sapUser_it === "yes"}
+                    onChange={handleInputChange}
+                />
+                <label>Yes</label>
+                <input disabled
+                    type="radio"
+                    name="sapUser_it"
+                    value="no"
+                    checked={formData.sapUser_it === "no"}
+                    onChange={handleInputChange}
+                />
+                <label>No</label>
+            </div>
+            <div className="form-group inline-select">
+                {formData.sapUser_it === "yes" && (
                     <>
                         <p>Enter your SAP ID</p>
-                        <input
+                        <input disabled
                             type="text"
-                            name="sapId"
-                            value={employee.sapId}
+                            name="sapId_it"
+                            value={formData.sapId_it}
                             onChange={handleInputChange}
-                            disabled={isFormDisabled.sapId}
                         />
                     </>
                 )}
-
-                <p>10. Surrender of Residential Quarters Allotted If Any</p>
-                <select
-                    name="residentialQuarters"
-                    value={employee.residentialQuarters}
+            </div>
+            <div className="form-group inline-select">
+                <p>08. Surrender of Residential Quarters Allotted If Any</p>
+                <select disabled
+                    name="residentialQuarters_hr"
+                    value={formData.residentialQuarters_hr}
                     onChange={handleInputChange}
-                    disabled={isFormDisabled.residentialQuarters}
                 >
                     <option value="" disabled>
                         Choose
@@ -358,143 +321,125 @@ const Modal = ({ admin, setIsOpen,employee }) => {
                     <option value="NO">NO</option>
                     <option value="DON'T HAVE ANY">DON'T HAVE ANY</option>
                 </select>
-
-                <p>11. Are You A CPPP User?</p>
-                <input
+            </div>
+            <div className="form-group inline-select">
+                <p>09. Whether CP & PP Accounts Are Disabled?</p>
+                <input disabled
                     type="radio"
-                    name="cpppUser"
+                    name="cpppUser_it"
                     value="yes"
+                    checked={formData.cpppUser_it === "yes"}
                     onChange={handleInputChange}
-                    checked={employee.cpppUser === "yes"}
-                    disabled={isFormDisabled.cpppUser}
                 />
                 <label>Yes</label>
-                <input
+                <input disabled
                     type="radio"
-                    name="cpppUser"
+                    name="cpppUser_it"
                     value="no"
+                    checked={formData.cpppUser_it === "no"}
                     onChange={handleInputChange}
-                    checked={employee.cpppUser === "no"}
-                    disabled={isFormDisabled.cpppUser}
                 />
                 <label>No</label>
-
-                {employee.cpppUser === "yes" && (
+            </div>
+            <div className="form-group inline-select">
+                {formData.cpppUser_it === "yes" && (
                     <>
-                        <p>Any tender is under process under your CPPP ID</p>
-                        <input
+                        <p>Enter your CP & PP ID</p>
+                        <input disabled
                             type="text"
-                            name="cpppId"
-                            value={employee.cpppId}
+                            name="cpppId_it"
+                            value={formData.cpppId_it}
                             onChange={handleInputChange}
-                            disabled={isFormDisabled.cpppId}
                         />
                     </>
                 )}
-
-                <p>12. Return of AAI Employee Card/Medical Card</p>
-                <input
+            </div>
+            <div className="form-group inline-select">
+                <p>10. Have you surrendered your Employee Card?</p>
+                <input disabled
                     type="radio"
-                    name="employeeCardReturn"
+                    name="employeeCardReturn_hr"
                     value="yes"
+                    checked={formData.employeeCardReturn_hr === "yes"}
                     onChange={handleInputChange}
-                    checked={employee.employeeCardReturn === "yes"}
-                    disabled={isFormDisabled.employeeCardReturn}
                 />
                 <label>Yes</label>
-                <input
+                <input disabled
                     type="radio"
-                    name="employeeCardReturn"
+                    name="employeeCardReturn_hr"
                     value="no"
+                    checked={formData.employeeCardReturn_hr === "no"}
                     onChange={handleInputChange}
-                    checked={employee.employeeCardReturn === "no"}
-                    disabled={isFormDisabled.employeeCardReturn}
                 />
                 <label>No</label>
-
-                <p>13. Reason for Applying NOC</p>
-                <input
-                    type="radio"
+            </div>
+            <div className="form-group inline-select">
+                <p>11. Provide NOC Reason If Any</p>
+                <input disabled
+                    type="text"
                     name="nocReason"
-                    value="transfer"
+                    value={formData.nocReason}
                     onChange={handleInputChange}
-                    checked={employee.nocReason === "transfer"}
-                    disabled={isFormDisabled.nocReason}
                 />
-                <label>Transfer</label>
-                <input
-                    type="radio"
-                    name="nocReason"
-                    value="retirement"
+            </div>
+            <div className="form-group inline-select">
+                <p>12. Biometric Clearance Has Been Taken?</p>
+                <select disabled
+                    name="biometricTransfer_hr"
+                    value={formData.biometricTransfer_hr}
                     onChange={handleInputChange}
-                    checked={employee.nocReason === "retirement"}
-                    disabled={isFormDisabled.nocReason}
-                />
-                <label>Retirement</label>
-
-                <p>14. Have You Transferred out from Biometric Attendance System, RHQ, SR</p>
-                <input
-                    type="radio"
-                    name="biometricTransfer"
-                    value="yes"
+                >
+                    <option value="" disabled>
+                        Choose
+                    </option>
+                    <option value="YES">YES</option>
+                    <option value="NO">NO</option>
+                </select>
+            </div>
+            <div className="form-group inline-select">
+                <p>13. Detailed Clearance of All Office Dues?</p>
+                <select disabled
+                    name="officeDuesDetailed_finance"
+                    value={formData.officeDuesDetailed_finance}
                     onChange={handleInputChange}
-                    checked={employee.biometricTransfer === "yes"}
-                    disabled={isFormDisabled.biometricTransfer}
-                />
-                <label>Yes</label>
-                <input
-                    type="radio"
-                    name="biometricTransfer"
-                    value="no"
+                >
+                    <option value="" disabled>
+                        Choose
+                    </option>
+                    <option value="YES">YES</option>
+                    <option value="NO">NO</option>
+                </select>
+            </div>
+            <div className="form-group inline-select">
+                <p>14. Have you surrendered the Identity Card to Security Department?</p>
+                <select disabled
+                    name="identityCardReturn_security"
+                    value={formData.identityCardReturn_security}
                     onChange={handleInputChange}
-                    checked={employee.biometricTransfer === "no"}
-                    disabled={isFormDisabled.biometricTransfer}
-                />
-                <label>No</label>
-
-                <p>15. Is there any office dues such as recovery of overpayment, private trunk call charges sent to residence, and recovery on losses</p>
-                <input
-                    type="radio"
-                    name="officeDues"
-                    value="yes"
+                >
+                    <option value="" disabled>
+                        Choose
+                    </option>
+                    <option value="YES">YES</option>
+                    <option value="NO">NO</option>
+                </select>
+            </div>
+            <div className="form-group inline-select">
+                <p>15. Clearance of pending E-Office Files?</p>
+                <select disabled
+                    name="pendingEOfficeFiles_it"
+                    value={formData.pendingEOfficeFiles_it}
                     onChange={handleInputChange}
-                    checked={employee.officeDues === "yes"}
-                    disabled={isFormDisabled.officeDues}
-                />
-                <label>Yes</label>
-                <input
-                    type="radio"
-                    name="officeDues"
-                    value="no"
-                    onChange={handleInputChange}
-                    checked={employee.officeDues === "no"}
-                    disabled={isFormDisabled.officeDues}
-                />
-                <label>No</label>
-
-                <p>16. Return of identity card and BCAS AEP No</p>
-                <input
-                    type="radio"
-                    name="identityCardReturn"
-                    value="yes"
-                    onChange={handleInputChange}
-                    checked={employee.identityCardReturn === "yes"}
-                    disabled={isFormDisabled.identityCardReturn}
-                />
-                <label>Yes</label>
-                <input
-                    type="radio"
-                    name="identityCardReturn"
-                    value="no"
-                    onChange={handleInputChange}
-                    checked={employee.identityCardReturn === "no"}
-                    disabled={isFormDisabled.identityCardReturn}
-                />
-                <label>No</label>
-                <br/>
-                <button onClick={(event)=>submitHandler(event,1)}>Approved</button>
-                <button onClick={(event) => submitHandler(event, 2)}>Comment</button>
-
-            </form>
-        );
+                >
+                    <option value="" disabled>
+                        Choose
+                    </option>
+                    <option value="YES">YES</option>
+                    <option value="NO">NO</option>
+                </select>
+            </div>
+            <button onClick={(event) => submitHandler(event, 1)}>Approved</button>
+            <button onClick={(event) => submitHandler(event, 2)}>Comment</button>
+        </form>
+    );
 };
